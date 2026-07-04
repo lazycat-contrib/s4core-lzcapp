@@ -1,0 +1,94 @@
+application:
+  subdomain: s4
+  background_task: true
+  entries:
+    - id: main
+      title: "Console"
+      prefix_domain: console
+      path: /
+
+    - id: api
+      title: "S3 API"
+      path: /
+
+  upstreams:
+    - location: /
+      backend: http://s4core:9000/
+
+    - location: /
+      domain_prefix: console
+      backend: http://s4console:3000/
+  public_path:
+    - /
+  injects:
+    - id: console-login-autofill
+      on: browser
+      auth_required: false
+      prefix_domain: console
+      when:
+        - /
+        - /login*
+        - /auth/login*
+        - "/#/login*"
+        - "/*#/login*"
+      do:
+        - src: builtin://simple-inject-password
+          params:
+            user: "{{ .U.root_username }}"
+            password: "{{ .U.root_password }}"
+            onlyFillEmpty: true
+            autoSubmit: false
+services:
+  s4core:
+    # s4core/s4core:ce-v1.0.0-beta-federation
+    image: registry.lazycat.cloud/czyt/s4core/s4core:e2ed2ece2a5279a2
+    user: root
+    environment:
+      - S4_BIND=0.0.0.0:9000
+      - S4_DATA_DIR=/data
+      - S4_MODE=single
+      - S4_ROOT_USERNAME={{.U.root_username}}
+      - S4_ROOT_PASSWORD={{.U.root_password}}
+      - S4_JWT_SECRET={{ stable_secret "s4_jwt_secret" }}
+      - S4_ACCESS_KEY_ID={{.U.access_key_id}}
+      - S4_SECRET_ACCESS_KEY={{.U.secret_access_key}}
+      - S4_MAX_UPLOAD_SIZE={{.U.max_upload_size}}
+      - S4_LIFECYCLE_ENABLED={{.U.lifecycle_enabled}}
+      - S4_LIFECYCLE_INTERVAL_HOURS={{.U.lifecycle_interval_hours}}
+      - S4_LIFECYCLE_DRY_RUN={{.U.lifecycle_dry_run}}
+      - S4_COMPACTION_ENABLED={{.U.compaction_enabled}}
+      - S4_COMPACTION_INTERVAL_HOURS={{.U.compaction_interval_hours}}
+      - S4_COMPACTION_THRESHOLD={{.U.compaction_threshold}}
+      - S4_COMPACTION_DRY_RUN={{.U.compaction_dry_run}}
+      - S4_COMPACTION_FULL_TIME={{.U.compaction_full_time}}
+      - S4_MULTIPART_UPLOAD_TTL_HOURS={{.U.multipart_upload_ttl_hours}}
+      - S4_MULTIPART_CLEANUP_INTERVAL_HOURS={{.U.multipart_cleanup_interval_hours}}
+      - S4_METRICS_ENABLED={{.U.metrics_enabled}}
+      - S4_SELECT_ENABLED={{.U.select_enabled}}
+      - S4_SELECT_MAX_MEMORY={{.U.select_max_memory}}
+      - S4_SELECT_TIMEOUT={{.U.select_timeout}}
+      - RUST_LOG=s4_api=info,s4_server=info
+    binds:
+      - /lzcapp/var/s4-data:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - wget --spider -q http://127.0.0.1:9000/health || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  s4console:
+    # s4core/s4console:v0.0.1-alpha-9
+    image: registry.lazycat.cloud/czyt/s4core/s4console:4e81477369fa9b43
+    environment:
+      - S4_BACKEND_URL=http://s4core:9000
+      - NODE_ENV=production
+    depends_on:
+      - s4core
+
+usage: |
+  Default entry opens the S4 console at the default app domain.
+  The S3-compatible API is exposed at the api-prefixed app domain root path /.
+  Because S3 clients cannot use LazyCat browser authentication, public_path includes /. S4 IAM credentials still protect both the console and API.

@@ -1,0 +1,24 @@
+package: community.lazycat.app.s4core
+version: 1.0.0
+name: S4
+description: "S3-compatible object storage with deduplication, versioning, lifecycle policies, IAM, and S3 Select"
+author: "s4core"
+license: "Apache-2.0"
+homepage: "https://github.com/s4core/s4core"
+min_os_version: 1.6.0
+
+permissions:
+  required:
+    - net.internet
+
+locales:
+  zh:
+    name: "S4对象存储"
+    description: "支持去重、版本控制、生命周期策略、IAM 和 S3 Select 的 S3 兼容对象存储"
+    entries.main.title: "管理端"
+    entries.api.title: "S3 API"
+  en:
+    name: "S4"
+    description: "S3-compatible object storage with deduplication, versioning, lifecycle policies, IAM, and S3 Select"
+    entries.main.title: "Console"
+    entries.api.title: "S3 API"

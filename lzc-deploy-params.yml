@@ -1,0 +1,193 @@
+params:
+  - id: root_username
+    type: string
+    name: "Root Username"
+    description: "Root administrator username for the S4 console and IAM"
+    default_value: "root"
+    optional: false
+
+  - id: root_password
+    type: secret
+    name: "Root Password"
+    description: "Root administrator password; enables S4 IAM"
+    default_value: "$random(len=24)"
+    optional: false
+
+  - id: access_key_id
+    type: string
+    name: "S3 Access Key ID"
+    description: "Access key ID for S3 API authentication"
+    default_value: "$random(len=20)"
+    optional: true
+
+  - id: secret_access_key
+    type: secret
+    name: "S3 Secret Access Key"
+    description: "Secret access key for S3 API authentication"
+    default_value: "$random(len=40)"
+    optional: true
+
+  - id: max_upload_size
+    type: string
+    name: "Max Upload Size"
+    description: "Maximum upload size per request, for example 5GB, 100MB, or 1024KB"
+    default_value: "5GB"
+    optional: true
+
+  - id: lifecycle_enabled
+    type: bool
+    name: "Lifecycle Worker"
+    description: "Enable lifecycle policy worker"
+    default_value: "true"
+    optional: true
+
+  - id: lifecycle_interval_hours
+    type: string
+    name: "Lifecycle Interval Hours"
+    description: "Lifecycle evaluation interval in hours"
+    default_value: "24"
+    optional: true
+
+  - id: lifecycle_dry_run
+    type: bool
+    name: "Lifecycle Dry Run"
+    description: "Log lifecycle actions without deleting objects"
+    default_value: "false"
+    optional: true
+
+  - id: compaction_enabled
+    type: bool
+    name: "Compaction Worker"
+    description: "Enable volume compaction worker"
+    default_value: "true"
+    optional: true
+
+  - id: compaction_interval_hours
+    type: string
+    name: "Compaction Interval Hours"
+    description: "Compaction check interval in hours"
+    default_value: "1"
+    optional: true
+
+  - id: compaction_threshold
+    type: string
+    name: "Compaction Threshold"
+    description: "Minimum fragmentation ratio to compact, for example 0.3"
+    default_value: "0.3"
+    optional: true
+
+  - id: compaction_dry_run
+    type: bool
+    name: "Compaction Dry Run"
+    description: "Analyze compaction without rewriting data"
+    default_value: "false"
+    optional: true
+
+  - id: compaction_full_time
+    type: string
+    name: "Compaction Full Time"
+    description: "Daily full compaction time in HH:MM local time; leave empty to disable"
+    default_value: "02:00"
+    optional: true
+
+  - id: multipart_upload_ttl_hours
+    type: string
+    name: "Multipart Upload TTL Hours"
+    description: "TTL for abandoned multipart uploads in hours"
+    default_value: "24"
+    optional: true
+
+  - id: multipart_cleanup_interval_hours
+    type: string
+    name: "Multipart Cleanup Interval Hours"
+    description: "Cleanup check interval for abandoned multipart uploads in hours"
+    default_value: "1"
+    optional: true
+
+  - id: metrics_enabled
+    type: bool
+    name: "Prometheus Metrics"
+    description: "Enable Prometheus metrics endpoint"
+    default_value: "true"
+    optional: true
+
+  - id: select_enabled
+    type: bool
+    name: "S3 Select"
+    description: "Enable S3 Select SQL engine"
+    default_value: "true"
+    optional: true
+
+  - id: select_max_memory
+    type: string
+    name: "S3 Select Max Memory"
+    description: "Per-query memory limit for the SQL engine"
+    default_value: "256MB"
+    optional: true
+
+  - id: select_timeout
+    type: string
+    name: "S3 Select Timeout"
+    description: "SQL query timeout in seconds"
+    default_value: "60"
+    optional: true
+
+locales:
+  zh:
+    root_username:
+      name: "Root 用户名"
+      description: "S4 管理端和 IAM 的 Root 管理员用户名"
+    root_password:
+      name: "Root 密码"
+      description: "Root 管理员密码；设置后启用 S4 IAM"
+    access_key_id:
+      name: "S3 Access Key ID"
+      description: "S3 API 认证使用的 Access Key ID"
+    secret_access_key:
+      name: "S3 Secret Access Key"
+      description: "S3 API 认证使用的 Secret Access Key"
+    max_upload_size:
+      name: "最大上传大小"
+      description: "单次请求最大上传大小，例如 5GB、100MB 或 1024KB"
+    lifecycle_enabled:
+      name: "生命周期任务"
+      description: "启用生命周期策略后台任务"
+    lifecycle_interval_hours:
+      name: "生命周期间隔小时"
+      description: "生命周期策略评估间隔，单位小时"
+    lifecycle_dry_run:
+      name: "生命周期试运行"
+      description: "只记录生命周期动作，不删除对象"
+    compaction_enabled:
+      name: "压缩任务"
+      description: "启用卷压缩后台任务"
+    compaction_interval_hours:
+      name: "压缩检查间隔小时"
+      description: "压缩检查间隔，单位小时"
+    compaction_threshold:
+      name: "压缩阈值"
+      description: "触发压缩的最小碎片率，例如 0.3"
+    compaction_dry_run:
+      name: "压缩试运行"
+      description: "只分析压缩，不重写数据"
+    compaction_full_time:
+      name: "完整压缩时间"
+      description: "每日完整压缩时间，格式 HH:MM；留空禁用"
+    multipart_upload_ttl_hours:
+      name: "分片上传 TTL 小时"
+      description: "废弃分片上传的保留时间，单位小时"
+    multipart_cleanup_interval_hours:
+      name: "分片清理间隔小时"
+      description: "废弃分片上传清理检查间隔，单位小时"
+    metrics_enabled:
+      name: "Prometheus 指标"
+      description: "启用 Prometheus 指标端点"
+    select_enabled:
+      name: "S3 Select"
+      description: "启用 S3 Select SQL 引擎"
+    select_max_memory:
+      name: "S3 Select 最大内存"
+      description: "SQL 引擎单查询内存限制"
+    select_timeout:
+      name: "S3 Select 超时"
+      description: "SQL 查询超时时间，单位秒"
