@@ -40,8 +40,8 @@ application:
             autoSubmit: false
 services:
   s4core:
-    # s4core/s4core:ce-v1.0.0-beta-federation
-    image: registry.lazycat.cloud/czyt/s4core/s4core:e2ed2ece2a5279a2
+    # upstream: s4core/s4core:ce-v1.0.0-beta-federation
+    image: docker.1ms.run/s4core/s4core:ce-v1.0.0-beta-federation
     user: root
     environment:
       - S4_BIND=0.0.0.0:9000
@@ -80,8 +80,8 @@ services:
       start_period: 10s
 
   s4console:
-    # s4core/s4console:v0.0.1-alpha-9
-    image: registry.lazycat.cloud/czyt/s4core/s4console:4e81477369fa9b43
+    # upstream: s4core/s4console:v0.0.1-alpha-9
+    image: docker.1ms.run/s4core/s4console:v0.0.1-alpha-9
     environment:
       - S4_BACKEND_URL=http://s4core:9000
       - NODE_ENV=production
