@@ -37,8 +37,8 @@ application:
             autoSubmit: false
 services:
   s4core:
-    # upstream: s4core/s4core:ce-v1.1.0-erasure-coding
-    image: docker.1ms.run/s4core/s4core:ce-v1.1.0-erasure-coding
+    # upstream: s4core/s4core:ce-v1.1.1-secret-files
+    image: docker.1ms.run/s4core/s4core:ce-v1.1.1-secret-files
     user: root
     environment:
       - S4_BIND=0.0.0.0:9000
