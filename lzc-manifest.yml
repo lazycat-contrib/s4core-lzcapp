@@ -37,8 +37,8 @@ application:
             autoSubmit: false
 services:
   s4core:
-    # upstream: s4core/s4core:ce-v1.1.1-secret-files
-    image: docker.1ms.run/s4core/s4core:ce-v1.1.1-secret-files
+    # upstream: s4core/s4core:ce-v1.2.0-extended-metrics
+    image: docker.1ms.run/s4core/s4core:ce-v1.2.0-extended-metrics
     user: root
     environment:
       - S4_BIND=0.0.0.0:9000
