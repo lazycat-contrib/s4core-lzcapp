@@ -37,8 +37,8 @@ application:
             autoSubmit: false
 services:
   s4core:
-    # upstream: s4core/s4core:ce-v1.2.0-extended-metrics
-    image: docker.1ms.run/s4core/s4core:ce-v1.2.0-extended-metrics
+    # upstream: s4core/s4core:ce-v1.3.0-anti-entropy
+    image: docker.1ms.run/s4core/s4core:ce-v1.3.0-anti-entropy
     user: root
     environment:
       - S4_BIND=0.0.0.0:9000
